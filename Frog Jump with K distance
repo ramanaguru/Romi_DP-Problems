@@ -1,0 +1,39 @@
+ Frog Jump with K distance
+ 
+ //Problem
+ 
+ There are N stones, numbered 1,2,…,N. For each i (1≤i≤N), 
+There is a frog who is initially on Stone 
+
+1. He will repeat the following action some number of times to reach Stone N:
+
+If the frog is currently on Stone 
+i, jump to one of the following: Stone i+1,i+2,…,i+K. Here, a cost of 
+Abs. Difference is incurred, where j is the stone to land on.
+
+Find the minimum possible total cost incurred before the frog reaches Stone 
+N.
+ 
+ 
+ 
+ 
+ //Code
+ 
+ 
+ public int frogJumpTab(int n, int[] heights, int k){
+        int[] dp = new int[n+1];
+        dp[0] = 0;
+        for(int i=1;i<=n;i++)
+        {
+            int minJump = Integer.MAX_VALUE;
+            for(int j=1;j<=k;j++)
+            {
+                if(i-j>=0)
+                {
+                    minJump = Math.min(minJump, dp[i-j] +Math.abs(heights[i]-heights[i-j]));
+                }
+            }
+            dp[i] = minJump;
+        }
+        return dp[n];
+    } 
