@@ -44,7 +44,12 @@ Explanation 2:
         for(int i = 2; i <= A; i++){
             dp[i] = Integer.MAX_VALUE;
             for(int j = 1; j*j <= i; j++){
+            
+                // calculate the minimum count by taking the minimum of the current value
+                // and the value obtained by subtracting j*j from i and adding 1 to it
+                
                 dp[i] = Math.min(dp[i], 1 + dp[i - (j*j)]);
+                
             }
         }
 
