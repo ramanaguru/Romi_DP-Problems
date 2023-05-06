@@ -1,0 +1,98 @@
+Min Sum Path in Triangle(Leetcode 120)
+
+
+//Problem Link ----->  https://leetcode.com/problems/triangle/description/
+
+//Problem Description
+
+Given a triangle array, return the minimum path sum from top to bottom.
+
+For each step, you may move to an adjacent number of the row below. More formally, if you are on index i on the current row, 
+you may move to either index i or index i + 1 on the next row.
+
+
+Input: triangle = [[2],[3,4],[6,5,7],[4,1,8,3]]
+
+Output: 11
+
+Explanation: The triangle looks like:
+   2
+  3 4
+ 6 5 7
+4 1 8 3
+
+The minimum path sum from top to bottom is 2 + 3 + 5 + 1 = 11 (underlined above).
+
+Example 2:
+
+Input: triangle = [[-10]]
+
+Output: -10
+
+
+
+//Code
+
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        //Tabultion Method
+
+        //Time Complexity: O(N * N)
+        //Space Complexity: O(N * N)(Array Space)(We saved recursion stack space here)
+
+
+        int n = triangle.size();
+        int m = triangle.get(n-1).size();
+
+        int dp[][] = new int [n][m];
+
+        for(int i = 0; i < m; i++){
+            dp[n-1][i] = triangle.get(n-1).get(i);
+        }
+
+        for(int i = n-2; i  >= 0; i--){
+            for(int j = i ; j >= 0; j--){
+                int down     = triangle.get(i).get(j) + dp[i+1][j];
+                int diagonal = triangle.get(i).get(j) + dp[i+1][j+1];
+
+                dp[i][j] = Math.min(down, diagonal);
+            }
+        }
+        
+        return dp[0][0];
+
+        //Space optimised :
+
+        //TC: O(n*n) SC: O(n)
+
+        int n = triangle.size();
+        int m = triangle.get(n-1).size();
+
+        int front[] = new int[m-1];
+        for(int i = n-1; i >= 0; i--){
+
+            int curr[] = new int[m];          
+            for(int j = i; j >= 0; j--){
+                if(i == n-1){
+                    curr[j]= triangle.get(i).get(j);
+                }               
+                else{
+                    int down = triangle.get(i).get(j) + front[j];
+                    int diag = triangle.get(i).get(j) + front[j+1];
+                    curr[j] = Math.min(down, diag);
+               
+                }      
+            }
+
+            front = curr;
+            
+        }
+        return front[0];
+    }
+}       
+
+
+
+
+
+
