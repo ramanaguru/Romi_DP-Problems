@@ -1,0 +1,93 @@
+Partition Equal Subset Sum(Leetcode 416)
+
+Problem Link ----->  https://leetcode.com/problems/partition-equal-subset-sum/description/
+
+
+Problem Statement :
+Given an integer array nums, return true if you can partition the array into two subsets 
+such that the sum of the elements in both subsets is equal or false otherwise.
+
+Example 1:
+
+Input: nums = [1,5,11,5]
+
+Output: true
+
+Explanation: The array can be partitioned as [1, 5, 5] and [11].
+
+Example 2:
+
+Input: nums = [1,2,3,5]
+
+Output: false
+
+Explanation: The array cannot be partitioned into equal sum subsets.
+
+//CODE
+
+class Solution {
+    public boolean canPartition(int[] nums) {
+         // DP IS EASY WALE STUFF :)
+        //before qn solution is same as this 
+        //see how ur function call executed beautifully
+        //how to appraoch and think of Dp 
+        //Follow in This order  ---> Think  of recursion , change that to memoisation ,then to tabulation
+        // if u need space optimisation, change that tabulation solution to space opti.. That's it 
+        
+        int n = nums.length;
+        int totalSum = 0;
+        for(int i = 0; i < n ; i++){
+            totalSum += nums[i];
+        }
+
+        if(totalSum % 2 != 0){
+            return false;
+        }
+
+        int target = totalSum /2;
+
+        return subsetSumToK(n, target,nums);
+     
+    }
+
+    //function call 
+
+    public static boolean subsetSumToK(int n, int k, int arr[]){
+    
+        //Tabulation method. {u can convert this for Space optimisation}
+        //Always remember whenever in tabulation or in any dp solution i-1 or i+2 u can happily 
+        //do space optimisation
+        //Time Complexity && Space Complexity: O(N*K)
+
+      boolean dp[][] = new boolean[n][k+1];
+
+      for(int i = 0; i  < n; i++){
+          dp[i][0] = true;
+      }
+
+      if(arr[0] <= k) dp[0][arr[0]] = true; // see line 74
+
+      for(int i = 1; i < n ; i++){
+          for(int target = 1; target <= k; target++){
+          
+              boolean notTake  = dp[i-1][target];
+              boolean Take = false;
+              
+              if(arr[i]<= target){
+                  Take = dp[i-1][target- arr[i]];
+              }
+
+              dp[i][target] = Take|| notTake;
+          }
+      }
+
+      return dp[n-1][k];
+    }
+}
+
+
+// The first-row dp[0][] indicates that only the first element of the array is considered,
+//  therefore for the target value equal to arr[0], only the cell with that target will be true, 
+//  so explicitly set dp[0][arr[0]] =true, (dp[0][arr[0]] means that we are considering the first element 
+//  of the array with the target equal to the first element itself). Please note that it can happen that 
+//  arr[0]>target, so we first check it: if(arr[0]<=target) then set dp[0][arr[0]] = true.
