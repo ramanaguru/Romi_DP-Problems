@@ -65,7 +65,7 @@ class Solution {
 
         int maxi =  - (int)1e8; 
 
-        for(int delta1 = -1;  delta1 <= 1; delta1++){
+        for(int delta1 = -1;  delta1 <= 1; delta1++){ // delta are directions -1, 0 +1 (column checkwise in otherHands)
             for(int delta2 = -1; delta2 <= 1; delta2++){
                 int value = 0;
                 if(j1 == j2){
