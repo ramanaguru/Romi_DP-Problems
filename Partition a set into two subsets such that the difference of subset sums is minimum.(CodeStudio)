@@ -1,0 +1,81 @@
+Partition a set into two subsets such that the difference of subset sums is minimum.(CodeStudio)
+
+//Problem Link ----> https://www.codingninjas.com/codestudio/problems/partition-a-set-into-two-subsets-such-that-the-difference-of-subset-sums-is-minimum_842494
+
+//Problem Statement
+
+We are given an array ‘ARR’ with N positive integers. We need to partition the array into two subsets
+such that the absolute difference of the sum of elements of the subsets is minimum.
+
+We need to return only the minimum absolute difference of the sum of elements of the two partitions.
+
+
+Sample Input 1:
+
+1
+4
+1 2 3 4
+
+Sample Output 1:
+0
+
+
+Sample Input 2:
+1
+3
+8 6 5
+
+Sample Output 2:
+3
+
+
+
+
+//Code
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+	public static int minSubsetSumDifference(int[] arr, int n) {
+		int totalsum = 0;
+		for(int i = 0; i < n; i++){
+			totalsum += arr[i];
+		}
+
+		int k = totalsum;
+
+		boolean dp[][] = new boolean[n][k+1];
+
+		for(int i = 0; i < n; i++){
+			dp[i][0] = true;
+		}
+
+		if(arr[0] <= k) dp[0][arr[0]] = true;
+
+		for(int i = 1; i < n ; i++){
+			for(int target = 1; target <= k; target++){
+				boolean notTake = dp[i-1][target];
+				boolean Take = false;
+				if(arr[i] <= target){
+					Take = dp[i-1][target - arr[i]];  
+				}
+
+				dp[i][target] = Take || notTake;
+			}
+		}
+
+		int mini = Integer.MAX_VALUE;
+		for(int i =0 ; i <= totalsum /2; i++){
+			if(dp[n-1][i] == true){
+
+				int s1 = i;
+				int s2 = totalsum-i;
+
+				mini = Math.min(mini,Math.abs(s2 - s1));
+			}
+		}
+
+		return mini;
+	}
+
+}
