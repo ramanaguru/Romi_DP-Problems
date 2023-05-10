@@ -1,0 +1,88 @@
+Target Sum (Leetcode 494)
+
+//Problem Link -----> https://www.codingninjas.com/codestudio/problems/target-sum_4127362
+
+//Problem Statement :
+
+You are given an integer array nums and an integer target.
+
+You want to build an expression out of nums by adding one of the symbols '+' and '-' before each integer in nums and then concatenate all the integers.
+
+For example, if nums = [2, 1], you can add a '+' before 2 and a '-' before 1 and concatenate them to build the expression "+2-1".
+Return the number of different expressions that you can build, which evaluates to target.
+
+
+Example 1:
+
+Input: nums = [1,1,1,1,1], target = 3
+Output: 5
+
+Explanation: There are 5 ways to assign symbols to make the sum of nums be target 3.
+-1 + 1 + 1 + 1 + 1 = 3
++1 - 1 + 1 + 1 + 1 = 3
++1 + 1 - 1 + 1 + 1 = 3
++1 + 1 + 1 - 1 + 1 = 3
++1 + 1 + 1 + 1 - 1 = 3
+
+Example 2:
+
+Input: nums = [1], target = 1
+Output: 1
+
+//Code
+
+
+public class Solution {
+    public static int targetSum(int n, int target, int[] arr) {
+
+      return countPartitions(n, target, arr);
+
+    }
+
+    public static int countPartitions(int n, int d, int[] arr) {
+		int totalSum = 0;
+        
+		//s1 >= s2 || s1- s2 = D
+
+		for(int i = 0; i < n ; i++){
+			totalSum += arr[i];
+		}
+
+		if(totalSum - d < 0 ||  (totalSum - d)%2 == 1){
+			return 0 ;
+		}
+
+		return findWays(arr, (totalSum-d)/2);
+
+	}
+	 public static int findWays(int num[], int tar) {
+        //Tabulation  Method ---> TC : o(n * tar) ; SC : o(n * tar)
+        int n = num.length;
+        int dp[][]= new int[n][tar+1];
+
+         if(num[0] == 0) dp[0][0] =2;  // 2 cases -pick and not pick
+         else dp[0][0] = 1;  // 1 case - not pick
+    
+         if(num[0]!=0 && num[0]<=tar) dp[0][num[0]] = 1;  // 1 case -pick
+
+        for(int idx = 1; idx < n; idx++){
+
+            for(int sum = 0; sum <= tar; sum++){
+
+                int notTake = dp[idx-1] [sum];
+
+                int take = 0;
+
+                if(num[idx] <= sum){
+
+                    take = dp[idx-1] [sum - num[idx]];
+                 } 
+
+                   dp[idx][sum] = (notTake + take) ;
+
+            }
+            
+        }
+        return dp[n-1][tar]; 
+    }
+}
