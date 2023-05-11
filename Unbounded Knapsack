@@ -1,0 +1,94 @@
+Unbounded Knapsack 
+
+//Problem LINK  ------->  https://www.codingninjas.com/codestudio/problems/unbounded-knapsack_1215029
+
+//Problem Statement :"
+
+Given a set of N items, each with a weight and a value, represented by the array w[] and val[] respectively. Also, a knapsack with weight limit W.
+The task is to fill the knapsack in such a way that we can get the maximum profit. Return the maximum profit.
+Note: Each item can be taken any number of times.
+
+
+Sample Input 1
+2 test cases
+
+3  15
+
+7 2 4   - profit[]
+5 10 20 -weight[]
+
+2  3
+6 12  - profit[]
+4 17  -weight[]
+
+Sample Output 1
+
+21
+0
+
+Explanation Of Sample Input 1
+Test Case 1:  The given knapsack capacity is 15. We can fill the knapsack as [5, 5, 5] and [10, 5]. We will get a maximum profit of 21.
+
+Test Case 2: We can clearly see that no item has wait less than knapsack capacity. Therefore we can not fill knapsack with any item.
+
+
+
+//Code : 1. Memoisation  ---->  2. Tabulation
+
+//1.Memoisation  --->TC :  O(N*W)  ; SC :  O(N*W) + O(N)
+
+public class Solution {
+    public static int unboundedKnapsack(int n, int w, int[] profit, int[] weight) {
+        int dp[][] = new int[n][w+1];
+
+        for(int row[]: dp){
+            Arrays.fill(row,-1);
+        }
+        return memo(n-1, w, profit, weight, dp);
+    }
+
+    public static int memo(int idx, int tar, int v[], int w[],int dp[][]){
+        if(idx == 0){
+            return (tar/w[0]) * v[0];
+        }
+        if(dp[idx][tar] != -1) return dp[idx][tar];
+        int nottake = 0 + memo(idx-1, tar, v, w,dp);
+        int take = Integer.MIN_VALUE;
+        if(w[idx] <= tar){
+            take = v[idx] + memo(idx, tar-w[idx], v, w,dp);
+        }
+
+        return dp[idx][tar] = Math.max(nottake, take);
+
+    }
+}
+
+//2. Tabulation. ---> TC :  O(N*W). ; SC :  O(N*W)
+
+
+public class Solution {
+    public static int unboundedKnapsack(int n, int w, int[] profit, int[] weight) {
+    
+        int dp[][] = new int[n][w+1];
+
+        for(int i = 0; i <= w; i++){
+            dp[0][i] = ((int)i /weight[0]) * (profit[0]);
+        }
+
+        for(int idx = 1; idx < n; idx++){
+            for(int tar = 0; tar <= w ; tar++){
+                int nottake = dp[idx-1] [tar];
+                int take = Integer.MIN_VALUE;
+                if(weight[idx] <= tar){
+                    take = profit[idx] + dp[idx][tar-weight[idx]];
+                } 
+
+                dp[idx][tar] = Math.max(nottake, take);
+            }
+        }
+
+        return  dp[n-1] [w];
+    }
+ 
+}
+
