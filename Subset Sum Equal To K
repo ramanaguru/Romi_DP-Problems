@@ -26,7 +26,42 @@ false
 
 //Code
 
+//Memoisation
+
+public static boolean subsetSumToK(int n, int k, int arr[]){
+       int dp[][] = new int[n][k +1];
+
+       for(int row[] : dp){
+           Arrays.fill(row, -1);
+       }
+       return recur(n-1, k, arr, dp);
+        
+    }
+
+    public static boolean recur(int idx, int target, int arr[], int dp[][]){
+        if(target == 0){
+            return true;
+        }
+
+        if(idx == 0){
+            return (arr[0] == target);
+        }
+        if(dp[idx][target] != -1) return dp[idx][target]==0?false:true;
+        
+        boolean nottake = recur(idx-1, target, arr, dp);
+        boolean take = false;
+        if(arr[idx] <= target){
+            take = recur(idx-1, target - arr[idx],arr,dp);
+        }
+        dp[idx][target] = take || nottake?1:0;
+
+        return take || nottake ;
+        
+        --------------------------------------------------------------------------------------------------
+
         //Tabulation method.
+        
+        
         //Time Complexity && Space Complexity: O(N*K)
         
 
