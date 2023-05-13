@@ -1,0 +1,91 @@
+Leetcode 188 ===> Buy and sell Stocks - IV (K transactions)
+
+//Problem Link ----> https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/description/ 
+
+
+
+You are given an integer array prices where prices[i] is the price of a given stock on the ith day, and an integer k.
+
+Find the maximum profit you can achieve. You may complete at most k transactions: i.e. you may buy at most k times and sell at most k times.
+
+Note: You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).
+
+ 
+
+Example 1:
+
+Input: k = 2, prices = [2,4,1]
+Output: 2
+
+Explanation: Buy on day 1 (price = 2) and sell on day 2 (price = 4), profit = 4-2 = 2.
+Example 2:
+
+Input: k = 2, prices = [3,2,6,5,0,3]
+Output: 7
+
+Explanation: Buy on day 2 (price = 2) and sell on day 3 (price = 6), profit = 6-2 = 4. Then buy on day 5 (price = 0) and sell on day 6 (price = 3), profit = 3-0 = 3.
+
+
+// CODE 
+
+class Solution {
+    public int maxProfit(int k, int[] prices) {
+       
+    
+        int n=prices.length;
+        int[][][] dp = new int[n+1] [2] [k+1];
+
+        for(int idx = n-1; idx >= 0; idx--) {
+			  for(int buy = 0; buy < 2 ; buy++) {
+				  for(int cap=1; cap<=k; cap++) {
+					  if(buy==1) {
+						  dp[idx][buy][cap] = Math.max(-prices[idx]+dp[idx+1][0][cap],dp[idx+1][1][cap]);
+					  }
+					  else {
+						 dp[idx][buy][cap] = Math.max(prices[idx]+dp[idx+1][1][cap-1], dp[idx+1][0][cap]);
+					  }
+				  }
+			  }
+		  }
+		  return dp[0][1][k];
+ 
+     }
+}        
+
+
+    --------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+     ===> Leetcode 123 qn below with code =====>  there at Most 2 transactions allowed here K transaction only allowed
+
+      You are given an array prices where prices[i] is the price of a given stock on the ith day.
+
+      Find the maximum profit you can achieve. You may complete at most two transactions.
+
+      Note: You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).
+        
+        //Problem Link ----> https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/
+    
+
+          int n = prices.length;
+         int dp[][][] = new int[n+1][2][3]; // 2 is buy  3 is trancsations  its like dp[idx][buy+1][transactions+1]
+   
+
+         for(int idx = n-1 ; idx >= 0; idx --){
+             for(int buy= 0; buy <= 1; buy++){
+                 for(int cap = 1; cap <= 2; cap++){
+                      if(buy == 1){
+                         dp[idx][buy][cap] = Math.max(-prices[idx] + dp[idx +1] [0] [cap], 0+ dp[idx+1] [1] [cap]);
+                      }
+                      else{
+                         dp[idx][buy][cap] = Math.max(prices[idx] + dp[idx+1][1][cap-1] , 0+dp[idx+1][0][cap]);
+                      }
+        
+
+                 }
+             }
+         }
+
+         return dp[0][1][2]; 
+
+
