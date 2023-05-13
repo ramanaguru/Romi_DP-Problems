@@ -1,0 +1,78 @@
+Buy and sell stocks- III(Leetcode 123)
+
+
+  //Problem Link ----> https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/
+
+
+ You are given an array prices where prices[i] is the price of a given stock on the ith day.
+
+ Find the maximum profit you can achieve. You may complete at most two transactions.
+
+  Note: You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).
+  
+ ===> (Leetcode 188) ===> SAME QUESTION BUT K TRANSACTIONS
+        
+      
+    //Code
+
+          int n = prices.length;
+         int dp[][][] = new int[n+1][2][3]; // 2 is buy  3 is trancsations  its like dp[idx][buy+1][transactions+1]
+   
+
+         for(int idx = n-1 ; idx >= 0; idx --){
+             for(int buy= 0; buy <= 1; buy++){
+                 for(int cap = 1; cap <= 2; cap++){
+                      if(buy == 1){
+                         dp[idx][buy][cap] = Math.max(-prices[idx] + dp[idx +1] [0] [cap], 0+ dp[idx+1] [1] [cap]);
+                      }
+                      else{
+                         dp[idx][buy][cap] = Math.max(prices[idx] + dp[idx+1][1][cap-1] , 0+dp[idx+1][0][cap]);
+                      }
+        
+
+                 }
+             }
+         }
+
+         return dp[0][1][2]; 
+
+
+   ***Space optimised ***
+   
+   
+   
+   class Solution {
+    public int maxProfit(int[] prices) {
+        //At most 2 transactions
+      //Tabulation with Space Optimised
+     
+         int n = prices.length;
+        int dp[][][] = new int[n+1][2][3]; // 2 is buy  3 is trancsations  its like dp[idx][buy+1][transactions+1]
+   
+
+        for(int idx = n-1 ; idx >= 0; idx --){
+            for(int buy= 0; buy <= 1; buy++){
+                for(int cap = 1; cap <= 2; cap++){
+                     if(buy == 1){
+         dp[idx][buy][cap] = Math.max(-prices[idx] + dp[idx +1] [0] [cap], 0+ dp[idx+1] [1] [cap]);
+        }
+        else{
+             dp[idx][buy][cap] = Math.max(prices[idx] + dp[idx+1][1][cap-1] , 0+dp[idx+1][0][cap]);
+        }
+        
+
+        }
+        }
+        }
+
+        return dp[0][1][2];
+    }
+
+
+
+}
+                              idx 0  1  2  3
+ why j % 2 == 0    if u see   --->B  S  B  S             B is BUY. S is SELL
+
+
+/dp how assigned   --->  int[][] dp = new int[n + 1][5]; // n is length  ;5 --> 4 is transactions +1 so 5
