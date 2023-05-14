@@ -1,0 +1,76 @@
+Longest Common Subsequence(Leetcode 1143)
+
+//Problem Link ----> https://leetcode.com/problems/longest-common-subsequence/description/
+
+//Problem Statement :
+
+Given two strings text1 and text2, return the length of their longest common subsequence. If there is no common subsequence, return 0.
+
+A subsequence of a string is a new string generated from the original string with some characters (can be none) deleted without changing the relative order of the remaining characters.
+
+For example, "ace" is a subsequence of "abcde".
+A common subsequence of two strings is a subsequence that is common to both strings.
+
+
+
+Example Input
+Input 1:
+
+ A = "abbcdgf"
+ B = "bbadcgf"
+Input 2:
+
+ A = "aaaaaa"
+ B = "ababab"
+
+
+Example Output
+Output 1:
+
+ 5
+Output 2:
+
+ 3
+
+
+Example Explanation
+Explanation 1:
+
+ The longest common subsequence is "bbcgf", which has a length of 5.
+Explanation 2:
+
+ The longest common subsequence is "aaa", which has a length of 3.
+ 
+ 
+ //Code ---> 1. Memoisation  ----> 2. Tabulation
+ 
+ 
+ 
+ 1. Memoisation
+ 
+ 
+ class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        int n = text1.length();
+        int m = text2.length();
+        int dp[][] = new int[n][m];
+        for(int row[]:dp){
+            Arrays.fill(row,-1);
+        }
+
+        return lcs(n-1, m-1, text1, text2, dp);
+        
+    }
+
+    public static int lcs(int i , int j , String s1, String s2, int dp[][]){
+        if(i < 0 || j < 0){
+            return 0;
+        }
+        if(dp[i][j] != -1) return dp[i][j];
+        if(s1.charAt(i) == s2.charAt(j)) return dp[i][j] = 1 + lcs(i-1, j-1, s1, s2, dp);
+
+        return dp[i][j] = Math.max(lcs(i-1, j, s1, s2,dp) , lcs(i, j-1, s1, s2,dp));
+
+    }
+}
+
