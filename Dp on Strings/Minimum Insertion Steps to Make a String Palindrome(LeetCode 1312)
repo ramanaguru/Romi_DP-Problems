@@ -56,7 +56,7 @@ TC  : O(N*N)    &&  SC : O(N*N)
 
 class Solution {
     public int minInsertions(String s) {
-			  int n = s.length();
+	int n = s.length();
         return n - longestPalindromeSubsequence(s);
     }
 
