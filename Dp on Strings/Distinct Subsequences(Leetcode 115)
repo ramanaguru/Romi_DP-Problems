@@ -1,0 +1,92 @@
+Distinct Subsequences(Leetcode 115)
+
+=====================================================================================================================================
+//Problem Link ===========>  https://leetcode.com/problems/distinct-subsequences/description/
+
+=====================================================================================================================================
+//Problem Statement :
+
+Given two strings s and t, return the number of distinct 
+subsequences of s which equals t.
+
+The test cases are generated so that the answer fits on a 32-bit signed integer.
+
+ 
+
+Example 1:
+
+Input: s = "rabbbit", t = "rabbit"
+Output: 3
+
+Explanation:
+As shown below, there are 3 ways you can generate "rabbit" from s.
+rabbbit
+rabbbit
+rabbbit
+Example 2:
+
+Input: s = "babgbag", t = "bag"
+Output: 5
+
+Explanation:
+As shown below, there are 5 ways you can generate "bag" from s.
+babgbag
+babgbag
+babgbag
+babgbag
+babgbag
+
+=====================================================================================================================================
+
+//Code ======> 1.Memoisation ---. 2. Tabulation
+
+
+1. Memoisation ====> Tc : O(N*M)  ; Sc : O(N*M) + O(N+M)
+
+
+class Solution {
+    static int  mod = (int)Math.pow(10,9)+7;        // (To avoid overflow Error)
+
+    public int numDistinct(String s, String t) {
+        int n = s.length();
+        int m = t .length();
+        int dp[][] = new int[n][m];
+
+        for(int row[] : dp){
+            Arrays.fill(row , -1);
+        }
+
+        return f( s, t, n-1, m-1, dp);
+    }
+    
+
+   public static int f(String s1, String s2, int ind1, int ind2,int[][] dp){
+        if(ind2<0)
+           return 1;
+        if(ind1<0)
+           return 0;
+    
+        if(dp[ind1][ind2]!=-1) return dp[ind1][ind2];
+    
+        if(s1.charAt(ind1)==s2.charAt(ind2)){
+            
+            int nottake = f(s1,s2,ind1-1,ind2,dp);
+            int take = f(s1,s2,ind1-1,ind2-1,dp);
+         
+            return dp[ind1][ind2] = (take + nottake) % mod;
+        }
+    
+        else{
+           return dp[ind1][ind2] = f(s1,s2,ind1-1,ind2,dp);
+        }
+   }   
+}
+
+
+=====================================================================================================================================
+
+
+// 2. Tabulation   ====> Tc : O(N*M)  ; Sc  : O(N*M)
+
+
+
