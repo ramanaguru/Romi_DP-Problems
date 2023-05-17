@@ -51,7 +51,7 @@ public class Solution {
 
 		
 
-		int index = len-1;
+	int index = len-1;
         String str="";
 
         for(int k=1; k<=len;k++){
